@@ -24,16 +24,8 @@ pub fn run(config: &Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-fn search<'a>(content: &'a str, query: &str) -> Vec<&'a str> {
-    let mut result = Vec::new();
-
-    for line in content.lines() {
-        if line.contains(query) {
-            result.push(line);
-        }
-    }
-
-    result
+fn search<'a>(content: &'a str, query: &'a str) -> impl Iterator<Item = &'a str> {
+    content.lines().filter(move |line| line.contains(query))
 }
 
 #[cfg(test)]
@@ -45,9 +37,9 @@ mod tests {
         let content = "Rust:
 safe, fast, productive.
 Pick three.";
-
         let query = "duct";
+        let results: Vec<_> = search(content, query).collect();
 
-        assert_eq!(vec!["safe, fast, productive."], search(content, query));
+        assert_eq!(results, vec!["safe, fast, productive."]);
     }
 }

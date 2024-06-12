@@ -14,8 +14,8 @@ pub fn get_config() -> Result<Config, &'static str> {
     Ok(Config { file_path, query })
 }
 
-pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
-    let content = fs::read_to_string(config.file_path)?;
+pub fn run(config: &Config) -> Result<(), Box<dyn Error>> {
+    let content = fs::read_to_string(&config.file_path)?;
 
     for line in search(&content, &config.query) {
         println!("{line}");

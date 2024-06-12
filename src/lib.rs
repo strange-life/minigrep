@@ -20,19 +20,19 @@ pub fn get_config() -> Result<Config, &'static str> {
 }
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
-    let contents = fs::read_to_string(config.file_path)?;
+    let content = fs::read_to_string(config.file_path)?;
 
-    for line in search(&contents, &config.query) {
+    for line in search(&content, &config.query) {
         println!("{line}");
     }
 
     Ok(())
 }
 
-fn search<'a>(contents: &'a str, query: &str) -> Vec<&'a str> {
+fn search<'a>(content: &'a str, query: &str) -> Vec<&'a str> {
     let mut result = Vec::new();
 
-    for line in contents.lines() {
+    for line in content.lines() {
         if line.contains(query) {
             result.push(line);
         }
@@ -47,12 +47,12 @@ mod tests {
 
     #[test]
     fn one_result() {
-        let contents = "Rust:
+        let content = "Rust:
 safe, fast, productive.
 Pick three.";
 
         let query = "duct";
 
-        assert_eq!(vec!["safe, fast, productive."], search(contents, query));
+        assert_eq!(vec!["safe, fast, productive."], search(content, query));
     }
 }

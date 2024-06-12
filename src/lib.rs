@@ -8,13 +8,8 @@ pub struct Config {
 pub fn get_config() -> Result<Config, &'static str> {
     let mut args = env::args().skip(1);
 
-    let Some(file_path) = args.next() else {
-        return Err("no file path");
-    };
-
-    let Some(query) = args.next() else {
-        return Err("no query");
-    };
+    let file_path = args.next().ok_or("no file path")?;
+    let query = args.next().ok_or("no query")?;
 
     Ok(Config { file_path, query })
 }

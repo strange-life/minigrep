@@ -1,4 +1,4 @@
-use std::{error::Error, fs};
+use std::{env, error::Error, fs};
 
 pub struct Config {
     pub path: String,
@@ -12,6 +12,8 @@ pub fn parse_config(mut args: impl Iterator<Item = String>) -> Result<Config, &'
         query: String::new(),
         ignore_case: false,
     };
+
+    config.ignore_case = env::var("IGNORE_CASE").is_ok();
 
     while let Some(arg) = args.next() {
         match arg.as_str() {

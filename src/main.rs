@@ -1,9 +1,8 @@
-use minigrep::get_config;
-use minigrep::run;
-use std::process;
+use minigrep::{parse_config, run};
+use std::{env, process};
 
 fn main() {
-    let config = get_config().unwrap_or_else(|e| {
+    let config = parse_config(env::args()).unwrap_or_else(|e| {
         eprintln!("Parse arguments failed: {e}");
         process::exit(1);
     });
